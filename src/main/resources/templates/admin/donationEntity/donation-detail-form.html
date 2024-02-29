@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!--    CSS Styles-->
+	<link th:href="@{/css/styles.css}" rel="stylesheet"/>
+	<!-- Bootstrap CSS -->
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+
+	<title>Update a User</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<h3>UPDATE DONATION'S INFORMATION</h3>
+	<hr>
+	<form action="#" th:object="${donation}">
+		<div class="div row">
+			<input type="hidden" name="id" th:field="*{id}"/>
+
+			<div class="col-6">
+				<div class="form-group">
+					<label for="donationCode" class="col-form-label">Donation Code:</label>
+					<input type="text" name="donationCode" th:field="*{donationCode}" class="form-control"
+						   id="donationCode" disabled>
+				</div>
+
+				<div class="form-group">
+					<label for="startDate" class="col-form-label">Start Date:</label>
+					<input type="date" name="startDate" th:field="*{startDate}" class="form-control" id="startDate"
+						   disabled>
+				</div>
+
+				<div class="form-group">
+					<label for="endDate" class="col-form-label">End Date:</label>
+					<input type="date" name="endDate" th:field="*{endDate}" class="form-control" id="endDate" disabled>
+				</div>
+				<div class="form-group">
+					<label for="money" class="col-form-label">Money:</label>
+					<input type="text" name="money" th:value="*{money} + 'VND'" class="form-control" id="money" disabled>
+				</div>
+			</div>
+
+			<div class="col-6">
+				<div class="form-group">
+					<label for="organizationName" class="col-form-label">Organization Name:</label>
+					<input type="text" name="organizationName" th:field="*{organizationName}" class="form-control"
+						   id="organizationName" disabled>
+				</div>
+
+				<div class="form-group">
+					<label for="donationName" class="col-form-label">Donation Name:</label>
+					<input type="text" name="donationName" th:field="*{donationName}" class="form-control"
+						   id="donationName" disabled>
+				</div>
+				<div class="form-group">
+					<label class="col-form-label">Donation Status:</label>
+					<input type="text" class="form-control" th:if="*{donationStatus == 0}" th:value="Created" disabled/>
+					<input type="text" class="form-control" th:if="*{donationStatus == 1}" th:value="Progress"
+						   disabled/>
+					<input type="text" class="form-control" th:if="*{donationStatus == 2}" th:value="Ended" disabled/>
+					<input type="text" class="form-control" th:if="*{donationStatus == 3}" th:value="Closed" disabled/>
+				</div>
+
+				<div class="form-group">
+					<label for="phoneNumber" class="col-form-label">Phone
+																	Number:</label>
+					<input type="text" name="phoneNumber" th:field="*{phoneNumber}" class="form-control"
+						   id="phoneNumber" disabled>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="form-group">
+					<label for="donationDescription" class="col-form-label">Donation
+																			Description:</label>
+					<textarea name="donationDescription" id="donationDescription" th:field="*{donationDescription}"
+							  style="height:200px;width:100%;" disabled></textarea>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!--    USER DONATION TABLE-->
+	<table class="table">
+		<thead class="thead-dark">
+		<tr>
+			<th>Donor's Name</th>
+			<th>Money</th>
+			<th>Start Date</th>
+			<th>Donation Text</th>
+			<th>Donation Status</th>
+			<th>Actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="userDonation: ${userDonations}">
+			<td th:text="${userDonation.userDonationName}"></td>
+			<td th:text="${userDonation.userDonationMoney} + 'VND'"></td>
+			<td th:text="${userDonation.created}"></td>
+			<td th:text="${userDonation.userDonationText}"></td>
+			<td>
+				<p th:if="${userDonation.userDonationStatus == 0}" th:id="'udStatusButton-' + ${userDonation.id}"
+				   class="blue">Approve</p>
+				<p th:if="${userDonation.userDonationStatus == 1}" th:id="'udStatusButton-' + ${userDonation.id}"
+				   class="green">Approved</p>
+			</td>
+
+			<!-- Approve/ Approved Buttons-->
+			<td>
+				<button type="button" class="btn btn-primary"
+						th:classappend="${userDonation.userDonationStatus == 1} ? hiddenAll : ''"
+				   th:attr="onclick=|changeUserDonationStatus('${userDonation.id}', '${userDonation.userDonationStatus}')|"
+				   th:id="'buttonApprove-' + ${userDonation.id}">Approve</button>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<!--                    PAGINATION BUTTONS-->
+	<ul th:if="${not #lists.isEmpty(userDonations)}">
+		<li th:class="${userDonationPage.first} ? 'disabled':''" style="display:inline">
+			<span th:if="${userDonationPage.first}">←First</span>
+			<a th:if="${not userDonationPage.first}" th:href="@{/donations/detail(donationId=${donation.id},page=0)}">←First</a>
+		</li>
+		<li th:each='i : ${#numbers.sequence(0, userDonationPage.totalPages-1)}'
+			th:class="(${i}==${userDonationPage.number})? 'active' : ''" style="display:inline">
+			<span th:if='${i}==${userDonationPage.number}' th:text='${i+1}'>1</span>
+			<a th:if='${i}!=${userDonationPage.number}'
+			   th:href="@{/donations/detail(donationId=${donation.id},page=${i})}">
+				<span th:text='${i+1}'>1</span>
+			</a>
+		</li>
+		<li th:class="${userDonationPage.last} ? 'disabled':''" style="display:inline">
+			<span th:if="${userDonationPage.last}">Last➝</span>
+			<a th:if="${not userDonationPage.last}"
+			   th:href="@{/donations/detail(donationId=${donation.id},page=(${userDonationPage.totalPages}-1))}">Last➝</a>
+		</li>
+	</ul>
+
+	<hr>
+	<a th:href="@{/donations/list}">Back to Donation List</a>
+</div>
+
+</div>
+
+
+<!--BT JS-->
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--MAIN JS-->
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+

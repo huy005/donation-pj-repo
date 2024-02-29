@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Donation List</title>
+    <!--    CSS Styles-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <!--    BT CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            <h3 style="display:inline;" class="float-right">ADMIN</h3>
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link nav-link_new" id="userTab" href="../users/list">User Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active nav-link_new" id="donationTab" href="../donations/list">Donation
+                        Management</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <!--            USER-->
+            <div class="user-card-body">
+                <!--                ADD NEW DONATIONS BUTTON-->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <button class="btn btn-primary float-left mb-3" data-toggle="modal"
+                                    data-target="#exampleModal" data-whatever="@mdo">
+                                ADD NEW DONATIONS
+                            </button>
+                        </div>
+                        <!--                        SEARCH BAR-->
+                        <div class="col-6">
+                            <form action="#" th:action="@{/donations/search}" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="keyword"
+                                           class="form-control" placeholder="Search for..."/>
+                                    <input type="hidden" name="keyword2" value="search"/>
+                                    <span>
+                                <input class="btn btn-primary" type="submit" value="Search!"/>
+                             </span>
+                                </div>
+                            </form>
+                        </div>
+<!--                        MODAL-->
+                        <div>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add New Donations</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <form action="#" method="POST">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="donationCode" class="col-form-label">Donation
+                                                                Code:</label>
+                                                            <input type="text" class="form-control" id="donationCode">
+                                                            <p id="errorDonationCode" style="display:none"></p>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="startDate"
+                                                                   class="col-form-label">Start Date:</label>
+                                                            <input type="date" class="form-control" id="startDate">
+                                                            <p id="errorStartDate" style="display:none"></p>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="endDate"
+                                                                   class="col-form-label">End Date:</label>
+                                                            <input type="date" class="form-control" id="endDate">
+                                                            <p id="errorEndDate" style="display:none"></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="donationName" class="col-form-label">Donation
+                                                                Name:</label>
+                                                            <input type="text" class="form-control" id="donationName">
+                                                            <p id="errorDonationName" style="display:none"></p>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="organizationName" class="col-form-label">Organization
+                                                                Name:</label>
+                                                            <input type="text" class="form-control"
+                                                                   id="organizationName">
+                                                            <p id="errorOrganizationName" style="display:none"></p>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="phoneNumber" class="col-form-label">Phone
+                                                                Number:</label>
+                                                            <input type="text" class="form-control" id="phoneNumber">
+                                                            <p id="errorPhoneNumber" style="display:none"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="donationDescription" class="col-form-label">Donation
+                                                                Description:</label>
+                                                            <textarea name="donationDescription"
+                                                                      id="donationDescription"
+                                                                      style="height:200px;width:100%;"></textarea>
+                                                            <p id="errorDonationDescription" style="display:none"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <input type="button" id="addDonationBtn" value="Add"
+                                                       class="btn btn-primary"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--                LIST-->
+                            <table class="table" th:fragment="donationTable-fragment">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>Donation Code</th>
+                                    <th>Donation Name</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Organization Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Money</th>
+                                    <th>Donation Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="donation: ${donations}">
+                                    <td th:text="${donation.donationCode}"></td>
+                                    <td th:text="${donation.donationName}"></td>
+                                    <td th:text="${donation.startDate}"></td>
+                                    <td th:text="${donation.endDate}"></td>
+                                    <td th:text="${donation.organizationName}"></td>
+                                    <td th:text="${donation.phoneNumber}"></td>
+                                    <td th:text="${donation.money}"></td>
+                                    <td>
+                                        <p th:if="${donation.donationStatus == 0}" th:text="Created" th:id="'createdId-' + ${donation.id}" class="blue">Created</p>
+                                        <p th:if="${donation.donationStatus == 1}" th:text="Progress" th:id="'progressId-' + ${donation.id}" class="green">Progress</p>
+                                        <p th:if="${donation.donationStatus == 2}" th:text="Ended" th:id="'endedId-' + ${donation.id}" class="yellow">Ended</p>
+                                        <p th:if="${donation.donationStatus == 3}" th:text="Closed" th:id="'closedId-' + ${donation.id}" class="red">Closed</p>
+                                    </td>
+
+                                    <!--Buttons-->
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn btn-info dropdown-toggle" type="button"
+                                                    data-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                ...
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <!--                                        UPDATE BUTTON-->
+                                                <a class="dropdown-item" th:id="'updateDonationBtn-' + ${donation.id}"
+                                                   th:href="@{/donations/update(donationId=${donation.id})}"
+                                                   th:classappend="${donation.donationStatus == 3} ? disabled : blue">
+                                                    Update</a>
+                                                <!--                                        DETAIL BUTTON-->
+                                                <a class="dropdown-item"
+                                                   th:href="@{/donations/detail(donationId=${donation.id})}"><span
+                                                        class="blue">Detail</span></a>
+                                                <!--                                        DONATE BUTTON-->
+                                                <a class="dropdown-item blue" style="cursor:pointer"
+                                                   th:attr="onclick=|changeDonationStatus('${donation.id}', '${donation.donationStatus}')|"
+                                                   th:if="${donation.donationStatus == 0}"
+                                                   th:id="'donateIdBtn-' + ${donation.id}">Donate</a>
+                                                <!--                                                END BUTTON  -->
+                                                <a class="dropdown-item blue" style="cursor:pointer"
+                                                   th:attr="onclick=|changeDonationStatus('${donation.id}', '${donation.donationStatus}')|"
+                                                   th:if="${donation.donationStatus == 1}"
+                                                   th:id="'endIdBtn-' + ${donation.id}">End</a>
+                                                <!--                                                  CLOSE BUTTON                           -->
+                                                <a class="dropdown-item blue" style="cursor:pointer"
+                                                   th:attr="onclick=|changeDonationStatus('${donation.id}', '${donation.donationStatus}')|"
+                                                   th:if="${donation.donationStatus == 2}"
+                                                   th:id="'closeIdBtn-' + ${donation.id}">Close</a>
+                                                <!--                                        DELETE BUTTON-->
+                                                <a class="dropdown-item" th:id="'deleteDonationBtn-' + ${donation.id}"
+                                                   th:href="@{/donations/delete(donationId=${donation.id})}"
+                                                   th:classappend="${donation.donationStatus == 0} ? red : disabled"
+                                                   onclick="if (!(confirm('Are you sure you want to delete this donation?'))) return false">
+                                                    Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!--                    PAGINATION BUTTONS-->
+                            <div>
+                                <ul th:if="${! #lists.isEmpty(donations)}">
+                                    <li style="display:inline;">
+                                        <span th:if="${donationPage.first}">&lt;&lt;First</span>
+                                        <a
+                                                th:if="${!donationPage.first}"
+                                                th:href="@{/donations/list(page = ${donationPage.number} - 1)}"
+                                        >
+                                            &lt;&lt;Previous
+                                        </a>
+                                    </li>
+                                    <li
+                                            th:each="i : ${#numbers.sequence(0, donationPage.totalPages - 1)}"
+                                            style="display:inline; margin-left:10px;"
+                                    >
+                                        <span th:if="${i} == ${donationPage.number}" th:text="${i + 1}">1</span>
+                                        <a
+                                                th:if="${i} != ${donationPage.number}"
+                                                th:href="@{/donations/list(page = ${i})}"
+                                        >
+                                            <span th:text="${i+1}">1</span>
+                                        </a>
+                                    </li>
+                                    <li style="display:inline; margin-left: 10px">
+                                        <span th:if="${donationPage.last}">Last&gt;&gt;</span>
+                                        <a th:if="${!donationPage.last}"
+                                           th:href="@{/donations/list(page = (${donationPage.number} + 1))}">
+                                            Next&gt;&gt;</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--BT JS-->
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--MAIN JS-->
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+</body>
+</html>

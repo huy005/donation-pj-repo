@@ -1,0 +1,97 @@
+.nav-link_new{
+    cursor:pointer;
+}
+
+.red{
+    color:red !important
+}
+
+.blue{
+    color:blue !important
+}
+
+.green{
+    color:#00CC66 !important
+}
+
+.yellow{
+    color:#CC9900 !important
+}
+
+/* HOME PAGE */
+
+.header-img{
+    max-width: 100%;
+    height: 300px;
+    background: url('../img/donation-header.jpg');
+    background-size: contain;
+    position: relative;
+}
+
+#header-img-h1{
+    color:#0033CC;
+    top: 70%;
+    left: 9%;
+    position: absolute;
+}
+
+#container-donation-list-h1{
+ text-align: center;
+        font-size: 75px;
+}
+
+.table-tr-td-p{
+    margin-bottom: 0;
+}
+
+.donateHomeBtn{
+width: 100px;
+     height: 50px;
+}
+
+#container-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  width: 100%;
+}
+#container-table tr{
+    text-align: left;
+}
+
+#container-table tr, #container-table td{
+    border: 1px solid;
+    padding: 8px;
+}
+#container-table tr, #container-table td p{
+margin-bottom:0;
+}
+#container-table-lastTd{
+text-align:center;
+}
+
+.boldStyle{
+font-weight: bold;
+}
+
+.hiddenAll{
+    display:none !important;
+}
+
+#detail-container{
+    margin-top: 5px !important;
+}
+
+.detail-information, .detail-container-content{
+    background-color: #D5D5D5;
+    padding: 20px;
+}
+
+.detail-information p {
+    margin-bottom: 0;
+    padding-left:20px;
+}
+
+.cursorPointer{
+	cursor: pointer;
+}
